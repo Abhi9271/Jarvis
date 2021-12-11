@@ -27,7 +27,7 @@ def activate():
                 break
 
 
-def wish_Me():
+def wish_me():
     '''
     It reads the system time and greets you according to the hour. Then it gives it's introduction
     '''
@@ -89,13 +89,13 @@ def prog_quit():
 
 if __name__ == "__main__":
     activate()
-    wish_Me()
+    wish_me()
     while True:
         query = take_command().lower()
 
         if 'wikipedia' in query:
             speak('Searching Wikipedia...')
-            res = tasks.searchWiki(query)
+            res = tasks.search_wiki(query)
             speak("According to Wikipedia")
             speak(res)
 
@@ -111,25 +111,25 @@ if __name__ == "__main__":
                 ysearch = query.replace('search', '').replace('for', '').replace(
                     ' on ', '').replace('youtube', '').replace('ok', '').replace(f'{AI}', '')
                 speak("searching")
-                tasks.searchYoutube(ysearch.strip())
-            except Exception as e:
-                print(e)
+                tasks.search_youtube(ysearch.strip())
+            except Exception as caught_exception:
+                print(caught_exception)
 
         elif 'open youtube' in query:
-            tasks.openYt()
+            tasks.open_yt()
 
         elif 'search' in query and 'google' in query:
             try:
                 gsearch = query.replace('search', '').replace('for', '').replace(
                     ' on ', '').replace('google', '').replace('ok', '').replace(f'{AI}', '')
                 speak("searching")
-                tasks.searchGoogle(gsearch.strip())
-            except Exception as e:
-                print(e)
+                tasks.search_google(gsearch.strip())
+            except Exception as caught_exception:
+                print(caught_exception)
                 speak("Sorry sir, an error occured during your search")
 
         elif 'play music' in query:
-            tasks.playMusic()
+            tasks.play_music()
 
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
@@ -144,10 +144,10 @@ if __name__ == "__main__":
                 message = take_command()
                 message = message.replace('say', '').replace('that', '')
                 to = name.eread(nm.strip())
-                tasks.sendEmail(to, message)
+                tasks.send_email(to, message)
                 speak("Email has been sent sir")
 
-            except Exception as e:
+            except Exception as caught_exception:
                 speak("Could not send the specified email sir")
 
         elif 'open movies' in query:
@@ -174,8 +174,8 @@ if __name__ == "__main__":
                 to = name.numRead(rec)
                 tasks.send_sms(to, message)
                 speak("Your message has been delivered sir")
-            except Exception as e:
-                print(e)
+            except Exception as caught_exception:
+                print(caught_exception)
 
         elif 'start' in query:
             query = query.replace('ok', '').replace(

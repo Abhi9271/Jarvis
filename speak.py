@@ -1,3 +1,6 @@
+'''
+Takes a string as input and "speaks" it as audio using the pyttsx3 module
+'''
 import pyttsx3
 
 

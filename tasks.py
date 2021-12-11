@@ -8,41 +8,39 @@ import wikipedia
 import requests
 from bs4 import BeautifulSoup
 import check_process as cp
-from jarvis import speak
-
-# import googlesearch
+from speak import speak
 
 CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
 
 
-def searchWiki(query):
+def search_wiki(query):
     try:
         query = query.replace('wikipedia', '').replace('search', '').replace(
             'for', '').replace('on', '').replace('jarvis', '').replace('ok', '')
         results = wikipedia.summary(query.strip(), sentences=2)
         return results
-    except Exception as e:
-        print(e)
+    except Exception as caught_exception:
+        print(caught_exception)
 
 
 def myself():
-    f = open('myself.txt', mode='r')
+    info_file = open('myself.txt', mode='r')
     count = len(open('myself.txt').readlines())
-    r = f.readlines()
-    rd = random.randint(0, count-1)
-    return (r[rd])
+    read = info_file.readlines()
+    desc = random.randint(0, count-1)
+    return read[desc]
 
 
-def playMusic():
-    m_dir = "C:\\Users\\Ramesh singh\\Documents\\songs\\songs"
+def play_music():
+    m_dir = "C:\\Users\\Public\\Music"
     songs = os.listdir(m_dir)
     # plays a random song out of the list of all songs
-    rd = random.randint(0, len(songs)-1)
-    os.startfile(os.path.join(m_dir, songs[rd]))
+    song = random.randint(0, len(songs)-1)
+    os.startfile(os.path.join(m_dir, songs[song]))
     # webbrowser.open(m_dir)
 
 
-def searchGoogle(gsearch):
+def search_google(gsearch):
     if cp.checkIfProcessRunning('chrome'):
         webbrowser.get(CHROME).open(f'google.co.in/search?q={gsearch}')
     else:
@@ -50,7 +48,7 @@ def searchGoogle(gsearch):
         webbrowser.get(CHROME).open_new_tab(f'google.co.in/search?q={gsearch}')
 
 
-def searchYoutube(ysearch):
+def search_youtube(ysearch):
     if cp.checkIfProcessRunning('chrome'):
         webbrowser.get(CHROME).open(
             f'youtube.com/results?search_query={ysearch}')
@@ -60,7 +58,7 @@ def searchYoutube(ysearch):
             f'youtube.com/results?search_query={ysearch}')
 
 
-def openYt():
+def open_yt():
     if cp.checkIfProcessRunning('chrome'):
         webbrowser.get(CHROME).open('youtube.com')
     else:
@@ -69,7 +67,7 @@ def openYt():
 
 
 def movies():
-    mov = 'C:\\Users\\Ramesh singh\\Videos\\Movies'
+    mov = 'C:\\Users\\Abhi\\Videos'
     webbrowser.open(mov)
 
 
@@ -77,25 +75,25 @@ def open_chrome():
     os.startfile(CHROME[:-2])
 
 
-def sendEmail(to, message):
+def send_email(to, message):
     '''
     sends an Email using the smtplib to a specified email address
     '''
     # enter passcode before accessing
     eid = ""
-    pw = ""
-    fr = open('creds.txt')
-    if fr.mode == 'r':
-        r = fr.readlines()
-        eid = r[0]
-        pw = r[1]
-        fr.close()
+    passw = ""
+    f_r = open('creds.txt')
+    if f_r.mode == 'r':
+        creds = f_r.readlines()
+        eid = creds[0]
+        passw = creds[1]
+        f_r.close()
     else:
         print('File not in read mode')
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login(eid, pw)  # id and password are stored in a text file
+    server.login(eid, passw)  # id and password are stored in a text file
     server.sendmail(eid, to, message)
     server.close()
 
@@ -138,8 +136,8 @@ def news():
 
     toi_news = []
 
-    for th in toi_headings:
-        toi_news.append(th.text)
+    for heading in toi_headings:
+        toi_news.append(heading.text)
     for news_item in toi_news:
         print(news_item)
         speak(news_item)
