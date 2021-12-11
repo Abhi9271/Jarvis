@@ -8,6 +8,7 @@ import wikipedia
 import requests
 from bs4 import BeautifulSoup
 import check_process as cp
+from jarvis import speak
 
 # import googlesearch
 
@@ -140,4 +141,5 @@ def news():
     for th in toi_headings:
         toi_news.append(th.text)
     for news_item in toi_news:
-        return news_item
+        print(news_item)
+        speak(news_item)
