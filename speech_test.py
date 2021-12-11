@@ -12,6 +12,7 @@ engine = pyttsx3.init('sapi5')
 v = engine.getProperty('voices')
 voiceRate = 145
 engine.setProperty('voice', v[0].id)
+print(v[0].id)
 engine.setProperty('rate', voiceRate)
 engine.say(
     'This is echo 3 1 in the blind. I have 2 tangos in sight. Requesting permission to engage')

@@ -13,11 +13,9 @@ from speak import speak
 CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
 
 
-def search_wiki(query):
+def search_wiki(wiki_search):
     try:
-        query = query.replace('wikipedia', '').replace('search', '').replace(
-            'for', '').replace('on', '').replace('jarvis', '').replace('ok', '')
-        results = wikipedia.summary(query.strip(), sentences=2)
+        results = wikipedia.summary(wiki_search, sentences=2)
         return results
     except Exception as caught_exception:
         print(caught_exception)
@@ -32,12 +30,15 @@ def myself():
 
 
 def play_music():
-    m_dir = "C:\\Users\\Public\\Music"
+    m_dir = "C:\\Users\\Public\\Music\\Sample Music"
     songs = os.listdir(m_dir)
-    # plays a random song out of the list of all songs
-    song = random.randint(0, len(songs)-1)
-    os.startfile(os.path.join(m_dir, songs[song]))
-    # webbrowser.open(m_dir)
+    song_list = []
+    for song in songs:
+        if song.endswith('mp3'):
+            song_list.append(song)
+    selection = random.randint(0, len(song_list)-1)
+    print(song_list, selection)
+    os.startfile(os.path.join(m_dir, song_list[selection]))
 
 
 def search_google(gsearch):
@@ -114,6 +115,10 @@ def send_sms(number, message):
 
 
 def jsleep(sec):
+    """
+    Makes the assistant suspend operations for a period of time as defined by the user
+    Converts time in minutes to seconds and then uses the time.sleep() method to suspend the program process
+    """
     if 'minutes' in sec or 'minute' in sec:
         sec = sec.replace('minutes', '').replace('minute', '').strip()
         sec = int(sec)*60
@@ -126,7 +131,7 @@ def jsleep(sec):
 
 
 def news():
-    """ Gets 5 news headlines for the times of India and returns as a String"""
+    """ Gets 5 news headlines from the Times of India website and returns as a String"""
     toi_r = requests.get("https://timesofindia.indiatimes.com/briefs")
     toi_soup = BeautifulSoup(toi_r.content, 'html.parser')
 
@@ -139,5 +144,12 @@ def news():
     for heading in toi_headings:
         toi_news.append(heading.text)
     for news_item in toi_news:
-        print(news_item)
         speak(news_item)
+
+
+def get_ip():
+    """
+    Gets the IP address of the network connected to the system
+    """
+    ip_addr = requests.get('https://api.ipify.org').text
+    speak(f"Your IP Address is: {ip_addr}")

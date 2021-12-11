@@ -1,10 +1,12 @@
 import datetime
 import sys
+import re
 import speech_recognition as sr
 import pyautogui as pa
 import name
 import tasks
 from speak import speak
+from pywhatkit import playonyt
 
 
 pa.PAUSE = 1
@@ -18,9 +20,9 @@ def activate():
     while True:
         com = take_command().lower()
         while True:
-            if 'go to sleep' in com:
-                quit()
-            elif f'activate {AI}' in com:
+            if 'shutdown' in com:
+                prog_quit()
+            elif f'hey {AI}' in com:
                 return
             else:
                 speak("activation required")
@@ -88,14 +90,20 @@ def prog_quit():
 
 
 if __name__ == "__main__":
+    REPLACEMENTS = {'ok': '', f'{AI}': '', 'search': '', 'for': '', 'play': '',
+                    'on': '', 'google': '', 'youtube': '', 'wikipedia': ''}
     activate()
     wish_me()
     while True:
         query = take_command().lower()
 
         if 'wikipedia' in query:
+            rep = dict((re.escape(k), v) for k, v in REPLACEMENTS.items())
+            pattern = re.compile("|".join(rep.keys()))
+            wiki_search = pattern.sub(
+                lambda m: rep[re.escape(m.group(0))], query)
             speak('Searching Wikipedia...')
-            res = tasks.search_wiki(query)
+            res = tasks.search_wiki(wiki_search.strip())
             speak("According to Wikipedia")
             speak(res)
 
@@ -106,10 +114,19 @@ if __name__ == "__main__":
             me = tasks.myself()
             speak(f'{me}')
 
+        elif 'play' in query and 'on youtube' in query:
+            rep = dict((re.escape(k), v) for k, v in REPLACEMENTS.items())
+            pattern = re.compile("|".join(rep.keys()))
+            y_play = pattern.sub(
+                lambda m: rep[re.escape(m.group(0))], query)
+            playonyt(y_play)
+
         elif 'on youtube' in query:
             try:
-                ysearch = query.replace('search', '').replace('for', '').replace(
-                    ' on ', '').replace('youtube', '').replace('ok', '').replace(f'{AI}', '')
+                rep = dict((re.escape(k), v) for k, v in REPLACEMENTS.items())
+                pattern = re.compile("|".join(rep.keys()))
+                ysearch = pattern.sub(
+                    lambda m: rep[re.escape(m.group(0))], query)
                 speak("searching")
                 tasks.search_youtube(ysearch.strip())
             except Exception as caught_exception:
@@ -120,10 +137,12 @@ if __name__ == "__main__":
 
         elif 'search' in query and 'google' in query:
             try:
-                gsearch = query.replace('search', '').replace('for', '').replace(
-                    ' on ', '').replace('google', '').replace('ok', '').replace(f'{AI}', '')
+                rep = dict((re.escape(k), v) for k, v in REPLACEMENTS.items())
+                pattern = re.compile("|".join(rep.keys()))
+                g_search = pattern.sub(
+                    lambda m: rep[re.escape(m.group(0))], query)
                 speak("searching")
-                tasks.search_google(gsearch.strip())
+                tasks.search_google(g_search.strip())
             except Exception as caught_exception:
                 print(caught_exception)
                 speak("Sorry sir, an error occured during your search")
@@ -157,21 +176,13 @@ if __name__ == "__main__":
         elif 'open google' in query:
             tasks.open_chrome()
 
-        # elif 'covid-19' in query:
-        #     try:
-        #         speak("which state sir ?")
-        #         state = takeCommand()
-        #         ct.showUpdates(state)
-        #     except Exception as e:
-        #         print(e)
-
         elif 'message' in query:
             try:
                 speak("Tell me the name of the recipent sir")
                 rec = take_command().lower()
                 speak("What should I text?")
                 message = take_command()
-                to = name.numRead(rec)
+                to = name.num_read(rec)
                 tasks.send_sms(to, message)
                 speak("Your message has been delivered sir")
             except Exception as caught_exception:
@@ -194,6 +205,8 @@ if __name__ == "__main__":
         elif 'go to sleep' in query:
             speak("For how much time sir?")  # seconds or minutes
             time = take_command().lower()
+            if "cancel" in time:
+                continue
             speak(f"Sleeping for {time}")
             tasks.jsleep(time)
 
@@ -203,5 +216,16 @@ if __name__ == "__main__":
             except Exception as caught_exception:
                 print(caught_exception)
 
+        elif 'ip address' in query:
+            tasks.get_ip()
+
         elif 'shutdown' in query or 'shut down' in query:
             prog_quit()
+
+        # elif 'covid-19' in query:
+        #     try:
+        #         speak("which state sir ?")
+        #         state = takeCommand()
+        #         ct.showUpdates(state)
+        #     except Exception as e:
+        #         print(e)
