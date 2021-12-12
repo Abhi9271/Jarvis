@@ -6,6 +6,7 @@ import time
 import winsound
 import wikipedia
 import requests
+import pyjokes
 from bs4 import BeautifulSoup
 import check_process as cp
 from speak import speak
@@ -26,7 +27,9 @@ def myself():
     count = len(open('myself.txt').readlines())
     read = info_file.readlines()
     desc = random.randint(0, count-1)
-    return read[desc]
+    stmt = read[desc]
+    info_file.close()
+    return stmt
 
 
 def play_music():
@@ -83,14 +86,11 @@ def send_email(to, message):
     # enter passcode before accessing
     eid = ""
     passw = ""
-    f_r = open('creds.txt')
-    if f_r.mode == 'r':
-        creds = f_r.readlines()
-        eid = creds[0]
-        passw = creds[1]
-        f_r.close()
-    else:
-        print('File not in read mode')
+    f_r = open('creds.txt', mode='r')
+    creds = f_r.readlines()
+    eid = creds[0]
+    passw = creds[1]
+    f_r.close()
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
@@ -117,7 +117,8 @@ def send_sms(number, message):
 def jsleep(sec):
     """
     Makes the assistant suspend operations for a period of time as defined by the user
-    Converts time in minutes to seconds and then uses the time.sleep() method to suspend the program process
+    Converts time in minutes to seconds and then uses the time.sleep()
+    method to suspend the program process
     """
     if 'minutes' in sec or 'minute' in sec:
         sec = sec.replace('minutes', '').replace('minute', '').strip()
@@ -152,4 +153,20 @@ def get_ip():
     Gets the IP address of the network connected to the system
     """
     ip_addr = requests.get('https://api.ipify.org').text
-    speak(f"Your IP Address is: {ip_addr}")
+    speak(f"Your IP Address is: {ip_addr}.")
+
+
+def close(app):
+    os.system(f"taskkill /f /im {app}.exe")
+
+
+def jokes():
+    joke = pyjokes.get_joke()
+    speak(joke)
+
+
+def power_down():
+    """
+    Turns off the computer using the os module
+    """
+    os.system("shutdown /s /t 5")
