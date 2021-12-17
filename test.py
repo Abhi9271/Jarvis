@@ -89,14 +89,20 @@
 # rd = random.randint(0, count-1)
 # print(r[rd])
 
-import re
+# import re
 
-text = "hey friday open wikipedia"
-rep = {"hey": "", "friday": "", "open": ""}  # define desired replacements here
+# text = "hey friday open wikipedia"
+# rep = {"hey": "", "friday": "", "open": ""}  # define desired replacements here
 
-# use these three lines to do the replacement
-rep = dict((re.escape(k), v) for k, v in rep.items())
-# Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions
-pattern = re.compile("|".join(rep.keys()))
-text = pattern.sub(lambda m: rep[re.escape(m.group(0))], text)
-print(text.strip())
+# # use these three lines to do the replacement
+# rep = dict((re.escape(k), v) for k, v in rep.items())
+# # Python 3 renamed dict.iteritems to dict.items so use rep.items() for latest versions
+# pattern = re.compile("|".join(rep.keys()))
+# text = pattern.sub(lambda m: rep[re.escape(m.group(0))], text)
+# print(text.strip())
+str1 = "hey friday search for black holes on wikipedia"
+reps = ['hey', 'friday', 'search', 'for', 'on', 'wikipedia']
+
+str2 = str1.split()
+print(len(str2))
+print(len(reps))

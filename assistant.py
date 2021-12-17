@@ -1,3 +1,9 @@
+'''
+Main entry point for the Voice assistant application
+After running, the user will need to say any of the following hotwords
+followed by the name of the assistant: ok, hey, hi, activate, wake up.
+For eg: activate friday, wake up friday
+'''
 import datetime
 import time
 import sys
@@ -12,6 +18,7 @@ from speak import speak
 
 pa.PAUSE = 1
 AI = 'friday'
+lang = 'en-US'
 
 
 def activate():
@@ -66,7 +73,7 @@ def take_command():
 
     try:
         print("Recognizing...")
-        command = rec_audio.recognize_google(audio, language='en-IN')
+        command = rec_audio.recognize_google(audio, language=f'{lang}')
         print(f"User said: {command}\n")
 
     except Exception:
@@ -106,11 +113,12 @@ if __name__ == "__main__":
                 wiki_search = pattern.sub(
                     lambda m: rep[re.escape(m.group(0))], query)
                 speak('Searching Wikipedia...')
+                print(wiki_search)
                 res = tasks.search_wiki(wiki_search.strip())
                 speak("According to Wikipedia")
                 speak(res)
 
-            elif query == f'ok {AI}' or query == f'{AI}':
+            elif query in (f'ok {AI}'):
                 speak("Yes sir!")
 
             elif 'who are you' in query:
@@ -163,16 +171,6 @@ if __name__ == "__main__":
                     nm = take_command().lower()
                     nm = nm.replace('send', '').replace(
                         'it', '').replace('to', '')
-                    # speak("Would you like to add an attachment?")
-                    # choice = take_command()
-                    # # if 'yes' in query:
-                    # #     # speak("What should I write as the subject?")
-                    # #     # sub = take_command().lower()
-                    # #     # speak("What should I write in the body?")
-                    # #     # message = take_command().lower()
-                    # #     # file_location = input(r"Enter file path here(Use \\): ")
-
-                    # if 'no' in query:
                     speak("Okay, what should I text?")
                     message = take_command().lower()
                     to = name.eread(nm.strip())
@@ -188,6 +186,9 @@ if __name__ == "__main__":
 
             elif 'open google' in query:
                 tasks.open_chrome()
+
+            elif 'to do list' in query:
+                tasks.todo_list()
 
             elif 'message' in query:
                 try:

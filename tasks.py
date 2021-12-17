@@ -40,7 +40,6 @@ def play_music():
         if song.endswith('mp3'):
             song_list.append(song)
     selection = random.randint(0, len(song_list)-1)
-    print(song_list, selection)
     os.startfile(os.path.join(m_dir, song_list[selection]))
 
 
@@ -118,7 +117,7 @@ def jsleep(sec):
     """
     Makes the assistant suspend operations for a period of time as defined by the user
     Converts time in minutes to seconds and then uses the time.sleep()
-    method to suspend the program process
+    method to temporarily suspend the program process
     """
     if 'minutes' in sec or 'minute' in sec:
         sec = sec.replace('minutes', '').replace('minute', '').strip()
@@ -161,8 +160,15 @@ def close(app):
 
 
 def jokes():
+    '''
+    Uses the pyjokes module to read out programming jokes
+    '''
     joke = pyjokes.get_joke()
     speak(joke)
+
+
+def todo_list():
+    os.startfile(".\\todolist.html")
 
 
 def power_down():

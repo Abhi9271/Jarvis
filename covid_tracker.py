@@ -2,7 +2,7 @@ from plyer import notification
 import requests
 from bs4 import BeautifulSoup
 import time
-import jarvis
+import assistant
 
 
 def notifyMe(title, message):
@@ -50,8 +50,8 @@ def showUpdates(state):
             nTitle = 'Cases of covid - 19'
             nText = f"State: {dataList[1]}\nTotal Cases: {dataList[2]}\nCured: {dataList[3]}\nDeaths: {dataList[4]}"
             notifyMe(nTitle, nText)
-            jarvis.speak(f"Cases of covid-19 in {state}")
-            jarvis.speak(
+            assistant.speak(f"Cases of covid-19 in {state}")
+            assistant.speak(
                 f"Total Cases: {dataList[2]}, Cured: {dataList[3]}, Deaths: {dataList[4]}")
             time.sleep(2)
 
