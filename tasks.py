@@ -10,8 +10,7 @@ import pyjokes
 from bs4 import BeautifulSoup
 import check_process as cp
 from speak import speak
-
-CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
+BROWSER = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe %s'
 
 
 def search_wiki(wiki_search):
@@ -45,37 +44,37 @@ def play_music():
 
 def search_google(gsearch):
     if cp.checkIfProcessRunning('chrome'):
-        webbrowser.get(CHROME).open(f'google.co.in/search?q={gsearch}')
+        webbrowser.get(BROWSER).open(f'google.co.in/search?q={gsearch}')
     else:
-        os.startfile(CHROME[:-2])
-        webbrowser.get(CHROME).open_new_tab(f'google.co.in/search?q={gsearch}')
+        os.startfile(BROWSER[:-2])
+        webbrowser.get(BROWSER).open_new_tab(f'google.co.in/search?q={gsearch}')
 
 
 def search_youtube(ysearch):
     if cp.checkIfProcessRunning('chrome'):
-        webbrowser.get(CHROME).open(
+        webbrowser.get(BROWSER).open(
             f'youtube.com/results?search_query={ysearch}')
     else:
-        os.startfile(CHROME[:-2])
-        webbrowser.get(CHROME).open_new_tab(
+        os.startfile(BROWSER[:-2])
+        webbrowser.get(BROWSER).open_new_tab(
             f'youtube.com/results?search_query={ysearch}')
 
 
 def open_yt():
     if cp.checkIfProcessRunning('chrome'):
-        webbrowser.get(CHROME).open('youtube.com')
+        webbrowser.get(BROWSER).open('youtube.com')
     else:
-        os.startfile(CHROME[:-2])
-        webbrowser.get(CHROME).open_new_tab('youtube.com')
+        os.startfile(BROWSER[:-2])
+        webbrowser.get(BROWSER).open_new_tab('youtube.com')
 
 
 def movies():
-    mov = 'C:\\Users\\Abhi\\Videos'
+    mov = 'D:\\Videos\\Movies'
     webbrowser.open(mov)
 
 
-def open_chrome():
-    os.startfile(CHROME[:-2])
+def open_browser():
+    os.startfile(BROWSER[:-2])
 
 
 def send_email(to, message):

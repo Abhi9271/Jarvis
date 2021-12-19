@@ -6,8 +6,8 @@ import pyttsx3
 
 engine = pyttsx3.init('sapi5')
 VOICES = engine.getProperty('voices')
-VOICERATE = 137
-engine.setProperty('voice', VOICES[0].id)
+VOICERATE = 180
+engine.setProperty('voice', VOICES[1].id)
 engine.setProperty('rate', VOICERATE)
 
 

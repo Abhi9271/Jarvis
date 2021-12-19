@@ -18,7 +18,6 @@ from speak import speak
 
 pa.PAUSE = 1
 AI = 'friday'
-lang = 'en-US'
 
 
 def activate():
@@ -73,7 +72,7 @@ def take_command():
 
     try:
         print("Recognizing...")
-        command = rec_audio.recognize_google(audio, language=f'{lang}')
+        command = rec_audio.recognize_google(audio, language='en-US')
         print(f"User said: {command}\n")
 
     except Exception:
@@ -185,7 +184,7 @@ if __name__ == "__main__":
                 tasks.movies()
 
             elif 'open google' in query:
-                tasks.open_chrome()
+                tasks.open_browser()
 
             elif 'to do list' in query:
                 tasks.todo_list()
