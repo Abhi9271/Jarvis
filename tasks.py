@@ -10,7 +10,7 @@ import pyjokes
 from bs4 import BeautifulSoup
 import check_process as cp
 from speak import speak
-BROWSER = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe %s'
+BROWSER = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
 
 
 def search_wiki(wiki_search):
